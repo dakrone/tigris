@@ -3,7 +3,11 @@
 Tigris provides a stream for escaping json strings as they're being
 read from a different stream. So stream-to-stream string encoding.
 
-Only strings though.
+Only a single string though. It's pretty narrow-use.
+
+It's written in Java with a tiny Clojure wrapper because the
+[Clojure version](https://gist.github.com/dakrone/5577106) is pretty
+complicated (and buggy!). And because testing Java sucks.
 
 ## Usage
 
