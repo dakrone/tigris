@@ -20,6 +20,15 @@
   (str "{\"thing\":\"" s "\"}"))
 
 (deftest t-basic
-  (let [s1 "this is \"some\" text with quotes."]
+  (let [s1 "this is \"some\" text with quotes."
+        s2 "this is some \\ text with backslashes."
+        s3 "some UTF-8 text ಠ_ಠ."
+        s4 "\\\"things!\"\\"]
     (is (= (json-map-for-str (slurp (stream-for s1)))
-           (json-for s1)))))
+           (json-for s1)))
+    (is (= (json-map-for-str (slurp (stream-for s2)))
+           (json-for s2)))
+    (is (= (json-map-for-str (slurp (stream-for s3)))
+           (json-for s3)))
+    (is (= (json-map-for-str (slurp (stream-for s4)))
+           (json-for s4)))))
