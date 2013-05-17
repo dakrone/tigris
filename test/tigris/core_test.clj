@@ -54,3 +54,8 @@
     (is (= (json-map-for-str (slurp (stream-for line)))
            (json-for line))
         (pr-str line))))
+
+(deftest t-unicode
+  (let [s (slurp (input-stream (file (resource "unicode.txt"))))]
+    (is (= (json-map-for-str (slurp (stream-for s)))
+           (json-for s)))))
