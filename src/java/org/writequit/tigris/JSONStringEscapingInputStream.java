@@ -2,6 +2,9 @@ package org.writequit.tigris;
 
 import java.io.InputStream;
 import java.lang.Override;
+import java.lang.System;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Things!
@@ -10,6 +13,7 @@ public class JSONStringEscapingInputStream extends InputStream {
 
     final private InputStream source;
     private int byteBucket = -1;
+    private LinkedList<Byte> byteQueue = new LinkedList<Byte>();
     final private int ESCAPER = 92;
 
     public JSONStringEscapingInputStream(InputStream source) {
@@ -19,27 +23,36 @@ public class JSONStringEscapingInputStream extends InputStream {
     @Override
     public int read() throws java.io.IOException {
         // Render byte from bytebucket
-        if (this.byteBucket != -1) {
-            int b = this.byteBucket;
-            this.byteBucket = -1;
-            return b;
+        if (!this.byteQueue.isEmpty()) {
+            return (int)this.byteQueue.pop();
         }
 
         int nextByte = this.source.read();
 
-        // forward slash (/)
-        if (nextByte == 92) {
-            this.byteBucket = 92;
-            return ESCAPER;
+
+        switch (nextByte) {
+            case 92:
+                this.byteQueue.push(new Byte((byte)nextByte));
+                return ESCAPER;
+            case 34:
+                this.byteQueue.push(new Byte((byte)nextByte));
+                return ESCAPER;
+            case 9:
+                this.byteQueue.push(new Byte((byte)116));
+                return ESCAPER;
+            case 10:
+                this.byteQueue.push(new Byte((byte)110));
+                return ESCAPER;
+            case 8:
+                this.byteQueue.push(new Byte((byte)98));
+                return ESCAPER;
+            case 13:
+                this.byteQueue.push(new Byte((byte)114));
+                return ESCAPER;
+            default:
+                return nextByte;
         }
 
-        // double quote (")
-        if (nextByte == 34) {
-            this.byteBucket = 34;
-            return ESCAPER;
-        }
-
-        return nextByte;
     }
 
     @Override
