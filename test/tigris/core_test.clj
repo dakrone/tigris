@@ -1,5 +1,6 @@
 (ns tigris.core-test
-  (:require [clojure.test :refer :all]
+  (:require [clojure.java.io :refer :all]
+            [clojure.test :refer :all]
             [cheshire.core :refer :all]
             [tigris.core :refer :all])
   (:import (java.io ByteArrayInputStream)))
@@ -32,3 +33,8 @@
            (json-for s3)))
     (is (= (json-map-for-str (slurp (stream-for s4)))
            (json-for s4)))))
+
+(deftest t-large-string
+  (doseq [line (line-seq (reader (resource "large-string.txt")))]
+    (is (= (json-map-for-str (slurp (stream-for line)))
+           (json-for line)))))
