@@ -14,7 +14,7 @@ complicated (and buggy!). And because testing Java sucks.
 In project.clj
 
 ```clojure
-[tigris "0.1.1"]
+[tigris "0.1.2"]
 ```
 
 Tigris provides one method: `str-escaping-input-stream`.
