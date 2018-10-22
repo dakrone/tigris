@@ -1,4 +1,4 @@
-(defproject tigris "0.1.2"
+(defproject tigris "0.1.3-SNAPSHOT"
   :description "Stream-to-stream JSON string encoding"
   :url "https://github.com/dakrone/tigris"
   :license {:name "Eclipse Public License"
